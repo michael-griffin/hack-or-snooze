@@ -73,8 +73,24 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
-    // UNIMPLEMENTED: complete this function!
+   //TODO: generate a real ID, somehow
+  async addStory(user, newStory) {
+/*     let newStory = await storyList.addStory(currentUser,
+      {title: "Test", author: "Me", url: "http://meow.com"}); */
+
+    let createdAt = Date(); //returns a string with day/time
+    console.log(createdAt);
+
+    let storyId = Math.floor(Math.random()*1000000);
+    let username = user.username;
+    let storyObj = {
+      ...newStory,
+      createdAt,
+      storyId,
+      username,
+    }
+    let storyInstance = new Story(storyObj);
+    return storyInstance;
   }
 }
 
