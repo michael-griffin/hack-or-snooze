@@ -54,15 +54,41 @@ function putStoriesOnPage() {
 //conductor function
 //get data from story form, add this to story metho, append to UI page
 
-function submitNewStory(e){
+async function submitNewStory(e){
   e.preventDefault();
   let author = $("#author-input").val();
   let title = $("#title-input").val();
   let url = $("#url-input").val();
 
   const formInputs = {author, title, url};
-  storyList.addStory(currentUser, formInputs);
+  let storyToAdd = await storyList.addStory(currentUser, formInputs);
+  console.log('storytoadd is: ', storyToAdd);
 
+  //It looked originally like having too many fields from the new Story
+  //was causing the POST request to
+  let simplifiedStory = {
+    author: storyToAdd["author"],
+    title: storyToAdd["title"],
+    url: storyToAdd["url"]
+  };
+
+  console.log('simplified story is: ', simplifiedStory);
+  console.log('simplified story stringified', JSON.stringify(simplifiedStory));
+  console.log('loginToken type', typeof(currentUser.loginToken));
+
+  //Below works in Insomnia, but not here.
+  //
+  const response = await fetch(`${BASE_URL}/stories`, {
+    method: "POST",
+    body: JSON.stringify({
+      token: currentUser.loginToken,
+      story: simplifiedStory
+    }),
+    headers: { //have to specify if we are sending plain text or (stringified) json
+        "Content-Type": "application/json"
+    }
+  });
+  console.log(response);
   putStoriesOnPage();
 }
  $("#new-story-submit").on("click", submitNewStory)
