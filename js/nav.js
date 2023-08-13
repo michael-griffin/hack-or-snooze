@@ -49,8 +49,10 @@ function updateNavOnLogin() {
 }
 
 
-//TODO: still need to handle whether default message vs list appears.
+//TODO: clicking favorite does not cause favorites list appear
 function navFavoritesClick(){
   hidePageComponents();
   $navFavorites.show();
 }
+
+$('#nav-favorites').on('click', navFavoritesClick);

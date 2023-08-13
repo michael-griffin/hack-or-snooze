@@ -227,11 +227,16 @@ class User {
   /**
    * Add favorite, a
    */
+
+
+  //TODO: currently, we can add the same story twice to favorites
+  //check if story exists in this.favorites before fetch.
   async addFavorite(story){
     //add selected favorite to this.favorites
     // this.favorites.push(story);
     //Fetch to API
-   await fetch(`${BASE_URL}users/${this.username}/favorites/${story.storyId}`,{
+
+   await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,{
       method: "POST",
       body: JSON.stringify({token: this.loginToken}),
       headers: {
@@ -240,7 +245,19 @@ class User {
     });
   }
 
+
+  //TODO: removeFavorites not quite working
+    //registers successful API call, but does not update this.favorites
+
   async removeFavorite(story){
+    //Delete from database
+    await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,{
+      method: "DELETE",
+      body: JSON.stringify({token: this.loginToken}),
+      headers: {
+        "content-type": "application/json",
+      }
+    });
     //on favorites page, click
     // let ind;
     // for (let i = 0; i < this.favorites.length; i++){
@@ -252,14 +269,7 @@ class User {
     // }
     // this.favorites.splice(ind, 1);
 
-    //Fetch to API
-    await fetch(`${BASE_URL}users/${this.username}/favorites/${story.storyId}`,{
-      method: "DELETE",
-      body: JSON.stringify({token: this.loginToken}),
-      headers: {
-        "content-type": "application/json",
-      }
-    });
+
 
 
   }

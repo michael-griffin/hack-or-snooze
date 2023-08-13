@@ -81,16 +81,27 @@ async function submitNewStory(e){
 
   let $id = $closest.attr("id");
   const currentStory = await Story.retrieveStory($id);
-  //let storyToTarget = storyList.getStory(id);
-  //what is the jQuery for targeting
 
-  //check if star is already clicked?
-    //If clicked, user.unfavorite()
-    //otherwise, user.favorite()
+  //still need to check if currentStory is in user.favorites
 
-  //target storyID from star?
+  //TODO: check if this logic works!
+  let alreadyFav = currentUser.favorites.includes(favoriteStory => {
+    let favId = favoriteStory.id;
+    return (currentStory.id === favId);
+  });
+  //we should expect false?
+  console.log(alreadyFav);
+  if (alreadyFav){
+    currentUser.addFavorite(currentStory);
+  } else {
+    currentUser.removeFavorite(currentStory);
+  }
+  console.log(currentUser.favorites);
 
-  //If already favorited, unfavorit
+/*   let story = storyList.stories[0];   // grab first story on list
+  currentUser.addFavorite(story);
+  console.log(currentUser.favorites); */
+
  }
  //Add event listener to parent element of star
 $favoritesList.on('click', '.favorite-star', handleStarClick);
