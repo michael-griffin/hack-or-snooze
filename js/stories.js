@@ -26,6 +26,7 @@ function generateStoryMarkup(story) {
   //console.log("hostname, ", hostName)
   return $(`
       <li id="${story.storyId}">
+        <i class="favorite-star bi bi-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -59,9 +60,9 @@ function putStoriesOnPage() {
 
 async function submitNewStory(e){
   e.preventDefault();
-  let author = $("#author-input").val();
-  let title = $("#title-input").val();
-  let url = $("#url-input").val();
+  let author = $("#author-input").val("");
+  let title = $("#title-input").val("");
+  let url = $("#url-input").val("");
 
   const formInputs = {author, title, url};
   let storyToAdd = await storyList.addStory(currentUser, formInputs);
@@ -69,6 +70,29 @@ async function submitNewStory(e){
   let $story = generateStoryMarkup(storyToAdd);
   console.log($story, "$story");
   $allStoriesList.prepend($story);
-
+  $newStoryForm.hide();
 }
  $("#new-story-submit").on("click", submitNewStory);
+
+
+
+ function handleStarClick(evt){
+  console.log('got here');
+  console.log(evt.target);
+  let $closest = $(evt.target).closest('li');
+  console.log($closest, 'closest');
+
+  let storyToTarget = storyList.getStory(id);
+  //what is the jQuery for targeting
+
+  //check if star is already clicked?
+    //If clicked, user.unfavorite()
+    //otherwise, user.favorite()
+
+  //target storyID from star?
+
+  //If already favorited, unfavorit
+ }
+ //Add event listener to parent element of star
+$favoritesList.on('click', '.favorite-star', handleStarClick);
+$allStoriesList.on('click', '.favorite-star', handleStarClick);

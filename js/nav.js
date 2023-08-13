@@ -32,7 +32,9 @@ $navLogin.on("click", navLoginClick);
  *
  */
 function navNewStoryClick(){
+  hidePageComponents();
   $newStoryForm.show();
+  putStoriesOnPage();
 }
 $navNewStory.on("click", navNewStoryClick);
 
@@ -44,4 +46,11 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
+}
+
+
+//TODO: still need to handle whether default message vs list appears.
+function navFavoritesClick(){
+  hidePageComponents();
+  $navFavorites.show();
 }

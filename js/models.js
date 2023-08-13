@@ -26,6 +26,7 @@ class Story {
     const storyURL = new URL(this.url);
     return storyURL.hostname;
   }
+
 }
 
 /******************************************************************************
@@ -86,9 +87,9 @@ class StoryList {
       }
     });
 
-    let parsedData = await response.json();
-    let storyInstance = new Story(parsedData.story);
-
+    let storyData = await response.json();
+    let storyInstance = new Story(storyData.story);
+    this.stories.push(storyInstance);
     return storyInstance;
   }
 }
@@ -214,5 +215,27 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  /**
+   * Add favorite, a
+   */
+  addFavorite(story){
+    //add selected favorite to this.favorites
+    this.favorites.push(story);
+  }
+
+  removeFavorite(story){
+    //on favorites page, click
+    let ind;
+    for (let i = 0; i < this.favorites.length; i++){
+      let favId = this.favorites[i].storyId;
+      if (story.storyId === favId){
+        ind = i;
+        break;
+      }
+    }
+    this.favorites.splice(ind, 1);
+
   }
 }

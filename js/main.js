@@ -21,6 +21,10 @@ const $navMyStories = $("#nav-my-stories");
 
 const $newStoryForm = $(".new-story-form");
 
+const $favoritesContainer = $('.favorites-container');
+const $favoritesList = $('#favorites-list');
+
+  //contains default message + favorites list.
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -33,6 +37,7 @@ function hidePageComponents() {
     $loginForm,
     $signupForm,
     $newStoryForm,
+    $favoritesContainer
   ];
   components.forEach(c => c.hide());
 }
