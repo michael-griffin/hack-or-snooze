@@ -22,13 +22,11 @@ class Story {
   }
 
   /** Parses hostname out of URL and returns it. */
-
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    const storyURL = new URL(this.url);
+    return storyURL.hostname;
   }
 }
-
 
 /******************************************************************************
  * List of Story instances: used by UI to show story lists in DOM.
@@ -77,14 +75,20 @@ class StoryList {
 /*     let newStory = await storyList.addStory(currentUser,
       {title: "Test", author: "Me", url: "http://meow.com"}); */
 
-    let createdAt = Date(); //returns a string with day/time
-    let username = user.username;
-    let storyObj = {
-      ...newStory,
-      username,
-      createdAt
-    };
-    let storyInstance = new Story(storyObj);
+    let response =  await fetch(`${BASE_URL}/stories`, {
+      method: "POST",
+      body: JSON.stringify({
+        token: user.loginToken,
+        story: newStory,
+      }),
+      headers: {
+          "Content-Type": "application/json"
+      }
+    });
+
+    let parsedData = await response.json();
+    let storyInstance = new Story(parsedData.story);
+
     return storyInstance;
   }
 }

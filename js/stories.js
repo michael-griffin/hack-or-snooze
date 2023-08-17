@@ -23,6 +23,7 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  //console.log("hostname, ", hostName)
   return $(`
       <li id="${story.storyId}">
         <a href="${story.url}" target="a_blank" class="story-link">
@@ -65,23 +66,9 @@ async function submitNewStory(e){
   const formInputs = {author, title, url};
   let storyToAdd = await storyList.addStory(currentUser, formInputs);
 
+  let $story = generateStoryMarkup(storyToAdd);
+  console.log($story, "$story");
+  $allStoriesList.prepend($story);
 
-  let simplifiedStory = {
-    author: storyToAdd["author"],
-    title: storyToAdd["title"],
-    url: storyToAdd["url"]
-  };
-
-  await fetch(`${BASE_URL}/stories`, {
-    method: "POST",
-    body: JSON.stringify({
-      token: currentUser.loginToken,
-      story: simplifiedStory
-    }),
-    headers: { //have to specify if we are sending plain text or (stringified) json
-        "Content-Type": "application/json"
-    }
-  });
-  putStoriesOnPage();
 }
- $("#new-story-submit").on("click", submitNewStory)
+ $("#new-story-submit").on("click", submitNewStory);
