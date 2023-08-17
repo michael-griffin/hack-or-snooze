@@ -31,9 +31,10 @@ $navLogin.on("click", navLoginClick);
 /** After log in, open form to submit a new story
  *
  */
-function navSubmitStoryClick(evt){
-
+function navNewStoryClick(){
+  $newStoryForm.show();
 }
+$navNewStory.on("click", navNewStoryClick);
 
 /** When a user first logins in, update the navbar to reflect that. */
 

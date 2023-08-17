@@ -50,3 +50,19 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+//conductor function
+//get data from story form, add this to story metho, append to UI page
+
+function submitNewStory(e){
+  e.preventDefault();
+  let author = $("#author-input").val();
+  let title = $("#title-input").val();
+  let url = $("#url-input").val();
+
+  const formInputs = {author, title, url};
+  storyList.addStory(currentUser, formInputs);
+
+  putStoriesOnPage();
+}
+ $("#new-story-submit").on("click", submitNewStory)
