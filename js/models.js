@@ -27,6 +27,13 @@ class Story {
     return storyURL.hostname;
   }
 
+  /**Get story ID from API */
+  static async retrieveStory(storyId){
+    const response = await fetch(`${BASE_URL}/stories/${storyId}`);
+    const parsed = await response.json();
+    const story = parsed.story;
+    return story;
+  }
 }
 
 /******************************************************************************
@@ -220,22 +227,40 @@ class User {
   /**
    * Add favorite, a
    */
-  addFavorite(story){
+  async addFavorite(story){
     //add selected favorite to this.favorites
-    this.favorites.push(story);
+    // this.favorites.push(story);
+    //Fetch to API
+   await fetch(`${BASE_URL}users/${this.username}/favorites/${story.storyId}`,{
+      method: "POST",
+      body: JSON.stringify({token: this.loginToken}),
+      headers: {
+        "content-type": "application/json",
+      }
+    });
   }
 
-  removeFavorite(story){
+  async removeFavorite(story){
     //on favorites page, click
-    let ind;
-    for (let i = 0; i < this.favorites.length; i++){
-      let favId = this.favorites[i].storyId;
-      if (story.storyId === favId){
-        ind = i;
-        break;
+    // let ind;
+    // for (let i = 0; i < this.favorites.length; i++){
+    //   let favId = this.favorites[i].storyId;
+    //   if (story.storyId === favId){
+    //     ind = i;
+    //     break;
+    //   }
+    // }
+    // this.favorites.splice(ind, 1);
+
+    //Fetch to API
+    await fetch(`${BASE_URL}users/${this.username}/favorites/${story.storyId}`,{
+      method: "DELETE",
+      body: JSON.stringify({token: this.loginToken}),
+      headers: {
+        "content-type": "application/json",
       }
-    }
-    this.favorites.splice(ind, 1);
+    });
+
 
   }
 }

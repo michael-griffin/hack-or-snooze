@@ -76,13 +76,12 @@ async function submitNewStory(e){
 
 
 
- function handleStarClick(evt){
-  console.log('got here');
-  console.log(evt.target);
+ async function handleStarClick(evt){
   let $closest = $(evt.target).closest('li');
-  console.log($closest, 'closest');
 
-  let storyToTarget = storyList.getStory(id);
+  let $id = $closest.attr("id");
+  const currentStory = await Story.retrieveStory($id);
+  //let storyToTarget = storyList.getStory(id);
   //what is the jQuery for targeting
 
   //check if star is already clicked?
