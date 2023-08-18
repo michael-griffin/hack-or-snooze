@@ -115,6 +115,11 @@ function updateUIOnUserLogin() {
   updateNavOnLogin();
 }
 
+/**
+ * On logout, we should show the basic stories list,
+ * hide the favorites container, and
+ * hide navbar options for "new story" and "favorites"
+ */
 function updateUIOnUserLogout() {
   console.debug("updateUIOnUserLogout");
 

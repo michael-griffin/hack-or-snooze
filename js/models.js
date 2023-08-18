@@ -27,7 +27,7 @@ class Story {
     return storyURL.hostname;
   }
 
-  /**Get story ID from API */
+  /** Get story from API by ID, and return a new Story instance. */
   static async retrieveStory(storyId) {
     const response = await fetch(`${BASE_URL}/stories/${storyId}`);
     const parsed = await response.json();
@@ -83,7 +83,7 @@ class StoryList {
     /*     let newStory = await storyList.addStory(currentUser,
           {title: "Test", author: "Me", url: "http://meow.com"}); */
 
-    let response = await fetch(`${BASE_URL}/stories`, {
+    const response = await fetch(`${BASE_URL}/stories`, {
       method: "POST",
       body: JSON.stringify({
         token: user.loginToken,
@@ -94,8 +94,8 @@ class StoryList {
       }
     });
 
-    let storyData = await response.json();
-    let storyInstance = new Story(storyData.story);
+    const storyData = await response.json();
+    const storyInstance = new Story(storyData.story);
     this.stories.push(storyInstance);
     return storyInstance;
   }
@@ -224,20 +224,15 @@ class User {
     }
   }
 
-  /**
-   * Add favorite, a
+
+
+
+  /** add story to this.favorites, then POST story to database
+   * @param {*} story
    */
-
-
-  //TODO: currently, we can add the same story twice to favorites
-  //check if story exists in this.favorites before fetch.
   async addFavorite(story) {
-    //add selected favorite to this.favorites
-    //Add to database
-    //console.log('called add favorites, pushing: ', story);
-    console.log(story, "story that will be pushing into favorites")
     this.favorites.push(story);
-    console.log(story instanceof Story, "instance");
+
     await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
       method: "POST",
       body: JSON.stringify({ token: this.loginToken }),
@@ -245,18 +240,16 @@ class User {
         "content-type": "application/json",
       }
     });
-
   }
 
 
-  //TODO: removeFavorites not quite working
-  //registers successful API call, but does not update this.favorites
-
+  /** removes story from this.favorites' story
+   *  removes story from database with fetch DELETE
+   * @param {*} story
+   */
   async removeFavorite(story) {
-    //Delete from database
-    let favIds = currentUser.favorites.map(favorite => favorite.storyId);
+    let favIds = this.favorites.map(favorite => favorite.storyId);
     let favInd = favIds.indexOf(story.storyId);
-    //console.log('called removeFavorite, got, favorites list = ', favInd);
     this.favorites.splice(favInd, 1);
 
     await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
