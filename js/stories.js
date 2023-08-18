@@ -21,7 +21,6 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
   //check if story is in favorites, then add star
   const unfilledStar = '<i class="favorite-star bi bi-star"></i>';
   const filledStar = '<i class="favorite-star bi bi-star-fill"></i>';
@@ -129,7 +128,9 @@ async function submitNewStory(e) {
 $("#new-story-submit").on("click", submitNewStory);
 
 
-
+//One quirk of working site:
+  //On favorites page, clicking a star removes the fill, but does not
+  //refresh the page
 async function handleStarClick(evt) {
   let $closest = $(evt.target).closest('li');
   let $id = $closest.attr("id");
@@ -140,6 +141,8 @@ async function handleStarClick(evt) {
 
   toggleFavorites(currentStory);
 
+  //if on favorites page, put stor
+  //putFavoritesOnPage();
   //TODO: we still need to update page on favoritesList
   //putFavoritesOnPage();
 }
@@ -160,7 +163,30 @@ async function toggleFavorites(story){
   } else {
     await currentUser.removeFavorite(story);
   }
-  console.log(currentUser.favorites);
+  //toggle CSS class after we've updated currentUser.favorites
+  //use jQuery to grab (both) lists
+    //iterate through list
+    //find element matching current story (element id === story.storyId)
+
+
+  let $listItems = $('.stories-list').children();
+  console.log('storyListItems', $listItems);
+
+  for (let listItem of $listItems){
+    let currId = listItem.getAttribute('id');
+    //console.log(currId);
+    //if ID matches current story, modify star.
+    if (currId === story.storyId){
+      let $starElement;
+      console.log('starElement is: ', $starElement);
+      // const unfilledStar = '<i class="favorite-star bi bi-star"></i>';
+      // const filledStar = '<i class="favorite-star bi bi-star-fill"></i>';
+      $starElement.toggleClass('bi-star');
+      $starElement.toggleClass('bi-star-fill');
+    }
+  }
+
+  //console.log(currentUser.favorites);
 }
 
 // let story = storyList.stories[0];   // grab first story on list
