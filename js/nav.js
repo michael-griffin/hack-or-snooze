@@ -43,11 +43,19 @@ $navNewStory.on("click", navNewStoryClick);
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
   $(".main-nav-links").show();
+  hidePageComponents();
+  putStoriesOnPage();
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
+function updateNavOnLogout() {
+  console.debug("updateNavOnLogout");
+  $(".main-nav-links").hide();
+  $navLogin.show();
+  $navLogOut.hide();
+}
 
 /**
  * on clicking favorites link, hide rest of page body,

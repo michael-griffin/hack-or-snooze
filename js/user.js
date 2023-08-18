@@ -114,3 +114,12 @@ function updateUIOnUserLogin() {
 
   updateNavOnLogin();
 }
+
+function updateUIOnUserLogout() {
+  console.debug("updateUIOnUserLogout");
+
+  $allStoriesList.show();
+  $favoritesContainer.hide();
+
+  updateNavOnLogout();
+}

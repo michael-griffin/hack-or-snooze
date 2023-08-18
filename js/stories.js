@@ -20,22 +20,26 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  console.log(story, " is this a story?")
+  //console.log(story, " is this a story?")
   // console.debug("generateStoryMarkup", story);
   //check if story is in favorites, then add star
   const unfilledStar = '<i class="favorite-star bi bi-star"></i>';
   const filledStar = '<i class="favorite-star bi bi-star-fill"></i>';
 
-  let favIds = currentUser.favorites.map(favorite => favorite.storyId);
-  let isFav = favIds.includes(story.storyId);
+  let loginExtra = "";
+  if (currentUser){
+    let favIds = currentUser.favorites.map(favorite => favorite.storyId);
+    let isFav = favIds.includes(story.storyId);
+    loginExtra = isFav ? filledStar : unfilledStar;
+  }
+
 
   const hostName = story.getHostName();
   //console.log("hostname, ", hostName)
   //<i class="favorite-star bi bi-star"></i>
   return $(`
       <li id="${story.storyId}">
-        ${isFav ? filledStar : unfilledStar}
-
+        ${loginExtra}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -92,7 +96,7 @@ function putFavoritesOnPage() {
   } else {
     $('#favorites-default-message').hide();
     for (let favorite of currentUser.favorites) {
-      console.log(favorite, " favorite in loop");
+      //console.log(favorite, " favorite in loop");
       const $favorite = generateStoryMarkup(favorite);
       $favoritesList.append($favorite);
     }
