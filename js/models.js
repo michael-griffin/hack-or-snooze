@@ -31,7 +31,7 @@ class Story {
   static async retrieveStory(storyId) {
     const response = await fetch(`${BASE_URL}/stories/${storyId}`);
     const parsed = await response.json();
-    const story = parsed.story;
+    const story = new Story(parsed.story);
     return story;
   }
 }
@@ -235,7 +235,9 @@ class User {
     //add selected favorite to this.favorites
     //Add to database
     //console.log('called add favorites, pushing: ', story);
+    console.log(story, "story that will be pushing into favorites")
     this.favorites.push(story);
+    console.log(story instanceof Story, "instance");
     await fetch(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`, {
       method: "POST",
       body: JSON.stringify({ token: this.loginToken }),
@@ -243,6 +245,7 @@ class User {
         "content-type": "application/json",
       }
     });
+
   }
 
 

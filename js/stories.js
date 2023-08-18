@@ -20,6 +20,7 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
+  console.log(story, " is this a story?")
   // console.debug("generateStoryMarkup", story);
   //check if story is in favorites, then add star
   const unfilledStar = '<i class="favorite-star bi bi-star"></i>';
@@ -91,6 +92,7 @@ function putFavoritesOnPage() {
   } else {
     $('#favorites-default-message').hide();
     for (let favorite of currentUser.favorites) {
+      console.log(favorite, " favorite in loop");
       const $favorite = generateStoryMarkup(favorite);
       $favoritesList.append($favorite);
     }
@@ -144,14 +146,14 @@ async function handleStarClick(evt) {
   //if on favorites page, put stor
   //putFavoritesOnPage();
   //TODO: we still need to update page on favoritesList
-  //putFavoritesOnPage();
+
 }
 
 /**
  * receives a story Id, then checks user's favorites for a possible match
  * If already a favorite, removes favorite and updates database
  * Otherwise, adds favorite to currentUser
- * @param {*} id
+ *
  */
 async function toggleFavorites(story){
   let favIds = currentUser.favorites.map(favorite => favorite.storyId);
@@ -163,30 +165,10 @@ async function toggleFavorites(story){
   } else {
     await currentUser.removeFavorite(story);
   }
-  //toggle CSS class after we've updated currentUser.favorites
-  //use jQuery to grab (both) lists
-    //iterate through list
-    //find element matching current story (element id === story.storyId)
 
+  const starFilled = ["bi-star-fill", "bi-star"];
+  $(`#${story.storyId} > .favorite-star`).toggleClass(starFilled);
 
-  let $listItems = $('.stories-list').children();
-  console.log('storyListItems', $listItems);
-
-  for (let listItem of $listItems){
-    let currId = listItem.getAttribute('id');
-    //console.log(currId);
-    //if ID matches current story, modify star.
-    if (currId === story.storyId){
-      let $starElement;
-      console.log('starElement is: ', $starElement);
-      // const unfilledStar = '<i class="favorite-star bi bi-star"></i>';
-      // const filledStar = '<i class="favorite-star bi bi-star-fill"></i>';
-      $starElement.toggleClass('bi-star');
-      $starElement.toggleClass('bi-star-fill');
-    }
-  }
-
-  //console.log(currentUser.favorites);
 }
 
 // let story = storyList.stories[0];   // grab first story on list
