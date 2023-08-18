@@ -152,7 +152,7 @@ async function handleStarClick(evt) {
  */
 async function toggleFavorites(story){
   let favIds = currentUser.favorites.map(favorite => favorite.storyId);
-  let isFav = favIds.includes(story.id);
+  let isFav = favIds.includes(story.storyId);
 
   console.log('isFav is: ', isFav, 'toggling favorite');
   if (!isFav) {
