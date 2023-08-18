@@ -52,7 +52,8 @@ function updateNavOnLogin() {
 //TODO: clicking favorite does not cause favorites list appear
 function navFavoritesClick(){
   hidePageComponents();
-  $navFavorites.show();
+  putFavoritesOnPage();
+  $favoritesList.show();
 }
 
 $('#nav-favorites').on('click', navFavoritesClick);
