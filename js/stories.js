@@ -112,6 +112,7 @@ async function submitNewStory(e){
 
 
  async function handleStarClick(evt){
+  console.log("got into handleStarCLick")
   let $closest = $(evt.target).closest('li');
 
   let $id = $closest.attr("id");
@@ -125,11 +126,12 @@ async function submitNewStory(e){
     return (currentStory.id === favId);
   });
   //we should expect false?
-  console.log(alreadyFav);
-  if (alreadyFav){
-    currentUser.addFavorite(currentStory);
+  console.log(alreadyFav, "alreadyFav");
+
+  if (!alreadyFav){
+    await currentUser.addFavorite(currentStory);
   } else {
-    currentUser.removeFavorite(currentStory);
+    await currentUser.removeFavorite(currentStory);
   }
   console.log(currentUser.favorites);
 
