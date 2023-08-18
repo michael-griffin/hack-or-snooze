@@ -73,6 +73,7 @@ function putStoriesOnPage() {
 
 /** Get list of favorites, generate HTML, and put on page. */
 function putFavoritesOnPage(){
+  console.debug("putFavoritesOnPage");
   $favoritesList.empty();
 
   if (currentUser.favorites.length === 0){
@@ -83,9 +84,8 @@ function putFavoritesOnPage(){
       const $favorite = generateFavoriteMarkup(favorite);
       $favoritesList.append($favorite);
     }
-
-    $favoritesList.show();
   }
+  $favoritesList.show();
 }
 
 /** submitNewStory:
@@ -94,13 +94,21 @@ function putFavoritesOnPage(){
  */
 
 async function submitNewStory(e){
+  console.debug("submitNewStory");
+
   e.preventDefault();
-  let author = $("#author-input").val("");
-  let title = $("#title-input").val("");
-  let url = $("#url-input").val("");
+  let author = $("#author-input").val();
+  let title = $("#title-input").val();
+  let url = $("#url-input").val();
 
   const formInputs = {author, title, url};
+  //console.log(currentUser, " is currentUser", formInputs, " formInputs")
   let storyToAdd = await storyList.addStory(currentUser, formInputs);
+
+  //clear form feilds
+  $("#author-input").val("");
+  $("#title-input").val("");
+  $("#url-input").val("");
 
   let $story = generateStoryMarkup(storyToAdd);
   console.log($story, "$story");
@@ -131,6 +139,7 @@ async function submitNewStory(e){
     await currentUser.addFavorite(currentStory);
   } else {
     console.log('attempting to remove current story as favorite');
+    //TODO: potentially update favoritesList with closest here---
     await currentUser.removeFavorite(currentStory);
   }
   console.log(currentUser.favorites);
@@ -138,7 +147,7 @@ async function submitNewStory(e){
 /*   let story = storyList.stories[0];   // grab first story on list
   currentUser.addFavorite(story);
   console.log(currentUser.favorites); */
-
+  putFavoritesOnPage();
  }
  //Add event listener to parent element of star
 $favoritesList.on('click', '.favorite-star', handleStarClick);
