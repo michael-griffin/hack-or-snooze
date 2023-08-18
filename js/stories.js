@@ -37,6 +37,24 @@ function generateStoryMarkup(story) {
     `);
 }
 
+function generateFavoriteMarkup(story) {
+  // console.debug("generateStoryMarkup", story);
+
+  const hostName = story.getHostName();
+  //console.log("hostname, ", hostName)
+  return $(`
+      <div id="${story.storyId}">
+        <i class="favorite-star bi bi-star"></i>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </div>
+    `);
+}
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
@@ -57,12 +75,19 @@ function putStoriesOnPage() {
 function putFavoritesOnPage(){
   $favoritesList.empty();
 
-  for (let favorite of currentUser.favorites){
-    const $favorite = generateStoryMarkup(favorite);
-    $favoritesList.append($favorite);
+  if (currentUser.favorites.length === 0){
+    $('#favorites-default-message').show();
+  } else {
+    $('#favorites-default-message').hide();
+    for (let favorite of currentUser.favorites){
+      const $favorite = generateFavoriteMarkup(favorite);
+      $favoritesList.append($favorite);
+    }
+
+    $favoritesList.show();
   }
-  $favoritesList.show();
 }
+
 /** submitNewStory:
  * takes information from new story form, updates API with a new story,
  * and puts story on page.

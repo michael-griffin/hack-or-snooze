@@ -49,11 +49,15 @@ function updateNavOnLogin() {
 }
 
 
-//TODO: clicking favorite does not cause favorites list appear
+/**
+ * on clicking favorites link, hide rest of page body,
+ * put current user's favorites on page, and then
+ * show list (with a default message if there are no favorites).
+ */
 function navFavoritesClick(){
   hidePageComponents();
   putFavoritesOnPage();
-  $favoritesList.show();
+  $favoritesContainer.show(); //previously favoritesList.show()
 }
 
-$('#nav-favorites').on('click', navFavoritesClick);
+$navFavorites.on('click', navFavoritesClick);
