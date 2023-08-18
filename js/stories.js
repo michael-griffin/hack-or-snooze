@@ -43,7 +43,7 @@ function generateFavoriteMarkup(story) {
   const hostName = story.getHostName();
   //console.log("hostname, ", hostName)
   return $(`
-      <div id="${story.storyId}">
+      <li id="${story.storyId}">
         <i class="favorite-star bi bi-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -51,7 +51,7 @@ function generateFavoriteMarkup(story) {
         <small class="story-hostname">(${hostName})</small>
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
-      </div>
+      </li>
     `);
 }
 
@@ -114,23 +114,23 @@ async function submitNewStory(e){
  async function handleStarClick(evt){
   console.log("got into handleStarCLick")
   let $closest = $(evt.target).closest('li');
-
   let $id = $closest.attr("id");
-  const currentStory = await Story.retrieveStory($id);
+  console.log('id is: ', $id);
 
+  const currentStory = await Story.retrieveStory($id);
+  console.log('currentStory', currentStory);
   //still need to check if currentStory is in user.favorites
 
   //TODO: check if this logic works!
-  let alreadyFav = currentUser.favorites.includes(favoriteStory => {
-    let favId = favoriteStory.id;
-    return (currentStory.id === favId);
-  });
-  //we should expect false?
-  console.log(alreadyFav, "alreadyFav");
+
+  let favIds = currentUser.favorites.map(favorite => favorite.storyId);
+  let alreadyFav = favIds.includes($id);
 
   if (!alreadyFav){
+    console.log('attempting to add current story as favorite');
     await currentUser.addFavorite(currentStory);
   } else {
+    console.log('attempting to remove current story as favorite');
     await currentUser.removeFavorite(currentStory);
   }
   console.log(currentUser.favorites);
