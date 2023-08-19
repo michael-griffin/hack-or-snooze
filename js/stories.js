@@ -111,33 +111,21 @@ $("#new-story-submit").on("click", submitNewStory);
 
 
 /**
- * On click, selects closest list element, retrieves a story
- * based on this element's Id, and then toggles favorite status for that story
+ * On click, gets closest story and closest star,
+ * for closest story, toggles favorite status
+ * for closest star, toggles css class to make it appear selected/not
  * @param {*} evt
  */
-
-//consolidate handleStarClick and toggleFavorite.
 async function handleStarClick(evt) {
-  let $closest = $(evt.target).closest('li');
-  let $id = $closest.attr("id");
-  //console.log('clicked id is: ', $id);
+  let $closestStar = $(evt.target).closest('i');
+  let $closestLi = $(evt.target).closest('li');
+  let id = $closestLi.attr("id");
 
-  const currentStory = await Story.retrieveStory($id);
-  //console.log('currentStory', currentStory);
+  const story = await Story.retrieveStory(id);
 
-  toggleFavorites(currentStory);
-}
-
-/**
- * receives a story Id, then checks user's favorites for a possible match
- * If already a favorite, removes favorite and updates database
- * Otherwise, adds favorite to currentUser
- */
-async function toggleFavorites(story){
   let favIds = currentUser.favorites.map(favorite => favorite.storyId);
   let isFav = favIds.includes(story.storyId);
 
-  console.log('isFav is: ', isFav, 'toggling favorite');
   if (!isFav) {
     await currentUser.addFavorite(story);
   } else {
@@ -145,9 +133,11 @@ async function toggleFavorites(story){
   }
 
   const starFilled = "bi-star-fill bi-star";
-  $(`#${story.storyId} > .favorite-star`).toggleClass(starFilled);
-
+  $closestStar.toggleClass(starFilled);
 }
+
+
+
 
 // let story = storyList.stories[0];   // grab first story on list
 // currentUser.addFavorite(story);
